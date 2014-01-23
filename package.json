@@ -1,4 +1,3 @@
-
 {
     "name": "hardy",
     "version": "0.0.1",
@@ -19,7 +18,8 @@
     },
     "dependencies": {
         "phantomjs": "1.9.x",
-        "yslowjs": "0.3.x"
+        "yslow": "3.0.x",
+        "system": "0.1.x"
     },
     "devDependencies": {
     }
