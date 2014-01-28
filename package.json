@@ -1,0 +1,23 @@
+{
+    "name": "hardy",
+    "version": "0.0.1",
+    "description": "HTTP Archive Archive and viewer",
+    "author": "@roc",
+    "bugs": "https://github.com/alphagov/hardy/issues",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/alphagov/hardy.git"
+    },
+    "engines": {
+        "node": "0.10.2x",
+        "npm": "1.3.x"
+    },
+    "private": true,
+    "scripts": { },
+    "dependencies": {
+        "phantomjs": "1.9.x",
+        "yslow": "3.0.x"
+    },
+    "devDependencies": { }
+}
