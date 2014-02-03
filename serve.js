@@ -3,15 +3,8 @@ var http     = require('http'),
     path     = require('path'),
     fs       = require('fs'),
     yslow    = require('yslow'),
-    events   = require('events'),
+    events   = require('./app/event'),
     generate = require('./app/generate.js');
-
-var eventEmitter = new events.EventEmitter();
-    //url             = require('url'),
-    //split           = require('event-stream').split,
-    //util            = require('./util');
-
-console.log(generate);
 
 // Check that phantomjs exists.
 var file = '/usr/local/bin/phantomjs';
@@ -54,15 +47,22 @@ http.createServer(function(request, response) {
 
         var har = generate.generateHAR(query.url);
 
-        // eventEmitter.on('harGenerated', function(){
-        //     console.log('harGenerated');
-        //     var saved_har = writeHarToDisk(query.url,har);
+        // response.write("<p>",har.toString(),"</p>");
 
-        //     if(saved_har){
-        //         response.write("<p>" + saved_har + "</p>");
-        //     } else {
-        //         response.write("<p class='error'>Sorry there was a problem saving the HAR.</p>");
-        //     }
+        events.on('error',function(err){
+            console.log('error', err);
+        });
+
+
+        // eventEmitter.on('harGenerated', function(msg){
+        //     console.log('harGenerated');
+            // var saved_har = writeHarToDisk(query.url,har);
+
+            // if(saved_har){
+            //     response.write("<p>" + saved_har + "</p>");
+            // } else {
+            //     response.write("<p class='error'>Sorry there was a problem saving the HAR.</p>");
+            // }
         // });
 
     }
