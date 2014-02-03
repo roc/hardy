@@ -1,10 +1,11 @@
 // Quick wrapper around the phantomjs netsniff example
 var path         = require('path'),
-    execFile     = require('child_process').execFile,
-    spawn     = require('child_process').spawn,
+    exec         = require('child_process').exec,
+    // spawn        = require('child_process').spawn,
     phantomjs    = require('phantomjs'),
     events       = require('events'),
-    binPath      = phantomjs.path;
+    binPath      = phantomjs.path,
+    command;
 
 var eventEmitter = new events.EventEmitter();
 
@@ -12,18 +13,22 @@ module.exports = function(url)
 {
 
     var childArgs = [
-        ('./lib/netsniff.js')
+        path.join(__dirname, ' ./lib/netsniff.js')
     ];
 
     return {
         generateHAR: function generateHAR(url)
         {
             childArgs.push(url);
-            console.log(binPath);
-            execFile(binPath, childArgs, function(err, stdout, stderr) {
-              // console.log(stdout);
-              eventEmitter.emit('harGenerated');
-              return stdout;
+            // get phantom to write to file
+            childArgs.push('> ./hars/' + url + "_" + Date.now());
+            command = binPath + childArgs.join(' ');
+            exec(command, function(err, stdout, stderr) {
+                console.log(command);
+                // console.log(stdout);
+                console.log(err,stderr);
+                eventEmitter.emit('harGenerated');
+                return stdout;
             });
         }
     };

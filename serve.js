@@ -29,14 +29,14 @@ function _isEmpty(obj){
 function writeHarToDisk (url,har) {
     var harsPath = "/hars/" + url + "_" + Date.now();
     fs.writeFile("/hars/", "Hey there!", function(err) {
-    if(err) {
-        console.log(err);
-        return false;
-    } else {
-        console.log("File was saved at",harsPath);
-        return harsPath;
-    }
-});
+        if(err) {
+            console.log(err);
+            return false;
+        } else {
+            console.log("File was saved at",harsPath);
+            return harsPath;
+        }
+    });
 }
 
 http.createServer(function(request, response) {
@@ -54,16 +54,16 @@ http.createServer(function(request, response) {
 
         var har = generate.generateHAR(query.url);
 
-        eventEmitter.on('harGenerated', function(){
-            console.log('harGenerated');
-            var saved_har = writeHarToDisk(query.url,har);
+        // eventEmitter.on('harGenerated', function(){
+        //     console.log('harGenerated');
+        //     var saved_har = writeHarToDisk(query.url,har);
 
-            if(saved_har){
-                response.write("<p>" + saved_har + "</p>");
-            } else {
-                response.write("<p class='error'>Sorry there was a problem saving the HAR.</p>");
-            }
-        });
+        //     if(saved_har){
+        //         response.write("<p>" + saved_har + "</p>");
+        //     } else {
+        //         response.write("<p class='error'>Sorry there was a problem saving the HAR.</p>");
+        //     }
+        // });
 
     }
     response.end('');
