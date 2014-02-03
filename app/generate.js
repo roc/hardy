@@ -1,10 +1,12 @@
 // Quick wrapper around the phantomjs netsniff example
+    // spawn     = require('child_process').spawn,
 var path      = require('path'),
     exec      = require('child_process').exec,
-    // spawn     = require('child_process').spawn,
     phantomjs = require('phantomjs'),
-    events    = require('events'),
     binPath   = phantomjs.path,
+    appPath   = path.dirname(require.main.filename),
+    sniffPath = [appPath, '/lib/netsniff.js'].join(''),
+    events    = require('events'),
     events    = require('./event'),
     command;
 
@@ -12,30 +14,34 @@ var path      = require('path'),
 module.exports = function(url)
 {
 
-    var childArgs = [
-        path.join(__dirname, ' ./lib/netsniff.js')
-    ];
+    var childArgs = [];
 
     return {
         generateHAR: function generateHAR(url)
         {
-            childArgs.push(url);
             // get phantom to write to file
-            childArgs.push('> ./hars/' + url + "_" + Date.now());
-            command = binPath + childArgs.join(' ');
-            exec(command, function(err, stdout, stderr) {
-                // console.log(command);
-                // // console.log(stdout);
-                // console.log(err,'sterr',stderr);
+            var fileName = [encodeURIComponent(url),"_",Date.now().toString(),'.har'].join(''),
+                filePath = path.join(appPath,'/hars/',fileName);
+            childArgs.push(binPath);
+            childArgs.push(sniffPath);
+            childArgs.push(url);
+            childArgs.push('>');
+            childArgs.push(filePath);
+            // childArgs.push(path.join(__dirname,'/hars/har_1.har'));
+            command = childArgs.join(' ');
 
+
+            exec(command, function(err, stdout, stderr) {
                 if(err){
+                    console.log();
                     events.emit( 'error', err );
                     return err;
                 }
+                // If we don't error, pass to a handling function - TODO - make better (with spawn?)
+                events.emit( 'harGenerated', ['/hars/',fileName].join('') );
 
-                // eventEmitter.emit('harGenerated');
-                // return stdout;
             });
+
         }
     };
 }();

@@ -1,3 +1,4 @@
 node_modules
+hars/*
 .DS_Store
 log/*

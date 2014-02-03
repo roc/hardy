@@ -2,6 +2,7 @@ var http     = require('http'),
     url      = require('url'),
     path     = require('path'),
     fs       = require('fs'),
+    os       = require('os'),
     yslow    = require('yslow'),
     events   = require('./app/event'),
     generate = require('./app/generate.js');
@@ -43,14 +44,21 @@ http.createServer(function(request, response) {
 
         // console.log(query);
         response.write("<p>Getting URL...</p>");
-        response.write(query.url);
+        response.write("<p>"+query.url+"</p>");
 
         var har = generate.generateHAR(query.url);
 
         // response.write("<p>",har.toString(),"</p>");
 
-        events.on('error',function(err){
+        events.on('error', function(err){
             console.log('error', err);
+            response.write("<p class='error'>Sorry there was an error: " + err + "</p>");
+            response.end('');
+        });
+
+        events.on( 'harGenerated', function(path){
+            response.write("<p>"+path+"</p>");
+            response.end('');
         });
 
 
@@ -66,5 +74,5 @@ http.createServer(function(request, response) {
         // });
 
     }
-    response.end('');
+    response.write('checking...');
 }).listen(8080);
