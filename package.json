@@ -17,7 +17,8 @@
     "scripts": { },
     "dependencies": {
         "phantomjs": "1.9.x",
-        "yslow": "3.0.x"
+        "yslow": "3.0.x",
+        "jsdom": "0.9.x"
     },
     "devDependencies": { }
 }
